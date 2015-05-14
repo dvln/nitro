@@ -11,9 +11,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Quick and Easy Performance Analyzer
+// Package nitro is for quick and easy performance analysis.
 // Useful for comparing A/B against different drafts of functions or different functions
-// Loosely inspired by the go benchmark package
+// Loosely inspired by the go benchmark package.
 //
 // Example:
 //	import "github.com/spf13/nitro"
@@ -27,9 +27,10 @@ package nitro
 import (
 	"flag"
 	"fmt"
-	"os"
 	"runtime"
 	"time"
+
+	"github.com/dvln/out"
 )
 
 // Used for every benchmark for measuring memory.
@@ -37,6 +38,7 @@ var memStats runtime.MemStats
 
 var AnalysisOn = false
 
+// B is for Benchmark, this strict is for benchmarking data
 type B struct {
 	initialTime time.Time // Time entire process started
 	start       time.Time // Time step started
@@ -53,8 +55,7 @@ type B struct {
 
 func (b *B) startTimer() {
 	if b == nil {
-		fmt.Println("ERROR: can't call startTimer on a nil value")
-		os.Exit(-1)
+		out.Fatalln("can't call startTimer() on a nil value")
 	}
 	if !b.timerOn {
 		runtime.ReadMemStats(&memStats)
@@ -67,8 +68,7 @@ func (b *B) startTimer() {
 
 func (b *B) stopTimer() {
 	if b == nil {
-		fmt.Println("ERROR: can't call stopTimer on a nil value")
-		os.Exit(-1)
+		out.Fatalln("can't call stopTimer() on a nil value")
 	}
 	if b.timerOn {
 		b.duration += time.Since(b.start)
@@ -121,8 +121,8 @@ func (b *B) Step(str string) {
 	}
 
 	b.stopTimer()
-	fmt.Println(str + ":")
-	fmt.Println(b.results().toString())
+	out.Println(str + ":")
+	out.Println(b.results().toString())
 
 	b.resetTimer()
 	b.startTimer()
