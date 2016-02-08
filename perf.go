@@ -30,7 +30,7 @@ import (
 	"runtime"
 	"time"
 
-	"github3.cisco.com/ark/out.git"
+	"github.com/dvln/out"
 )
 
 // Used for every benchmark for measuring memory.
